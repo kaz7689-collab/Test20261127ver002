@@ -29,5 +29,6 @@
 - 利用状況の可視化：アクセス回数と最終閲覧日時を表題の右上に表示。
 ## 4. 実演
 ステップ実行 → 自動再生 → 黄色で整列完了 → 言語切り替え<br>
+https://blank-app-m1vjh8bk70i.streamlit.app/<br>
 Python / Streamlit / HTML / CSS / JavaScript / SVG / SQLite / GitHub
 # 前回ともども多くを学ばせて戴きました。<br>ありがとうございました！
