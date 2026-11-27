@@ -65,8 +65,8 @@ body {
     font-size: clamp(16px, 4vw, 32px);
     font-weight: bold;
     transition:
-        left 0.4s ease,
-        background-color 0.3s ease;
+        left 0.15s ease,
+        background-color 0.15s ease;
 }
 
 .balance {
@@ -74,7 +74,7 @@ body {
     bottom: 27px;
     width: 22.22%;
     height: 55px;
-    transition: left 0.35s ease;
+    transition: left 0.15s ease;
 }
 
 .explanation {
@@ -181,8 +181,9 @@ select {
         再生速度：
         <select id="speed">
             <option value="1600">ゆっくり</option>
-            <option value="1000" selected>標準</option>
+            <option value="1000">標準</option>
             <option value="600">速い</option>
+            <option value="200" selected>最速</option>
         </select>
     </label>
 
@@ -293,7 +294,8 @@ function shuffle() {
             [values[k], values[i]];
     }
 
-    // 初期状態が整列済みの場合は再生成
+    // 整列済みの場合は再生成
+
     if (values.every((v, i) => v === i + 1)) {
         return shuffle();
     }
@@ -309,7 +311,7 @@ function barPosition(index) {
 }
 
 
-// 棒グラフの生成
+// 棒グラフを生成
 
 function createBars() {
 
@@ -358,18 +360,21 @@ function createBars() {
                fill="none">
 
                 <!-- 左側の受け皿 -->
+
                 <path d="M 12 10
                          L 20 18
                          H 60
                          L 68 10"/>
 
                 <!-- 右側の受け皿 -->
+
                 <path d="M 92 10
                          L 100 18
                          H 140
                          L 148 10"/>
 
                 <!-- 2つの受け皿を連結 -->
+
                 <path d="M 40 18
                          V 43
                          H 120
@@ -378,6 +383,7 @@ function createBars() {
             </g>
 
             <!-- 中央の支点 -->
+
             <polygon
                 points="80,43 70,61 90,61"
                 fill="#849c9d"
@@ -391,7 +397,7 @@ function createBars() {
 }
 
 
-// 画面の更新
+// 画面を更新
 
 function render() {
 
@@ -432,6 +438,8 @@ function render() {
     }
 
 
+    // 統計情報を更新
+
     document.getElementById("round").textContent =
         Math.min(pass + 1, N - 1);
 
@@ -445,6 +453,8 @@ function render() {
         done ? N : pass;
 
 
+    // 操作ボタンの状態を更新
+
     document.getElementById("stepButton").disabled =
         done || playing;
 
@@ -457,13 +467,12 @@ function render() {
     document.getElementById("playButton").textContent =
         playing ? "Ⅱ Pause" : "▶ Play";
 
-
     updateMessage();
 
 }
 
 
-// 説明文の表示
+// 説明文を表示
 
 function updateMessage() {
 
