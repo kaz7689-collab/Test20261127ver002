@@ -1,25 +1,30 @@
-# 🎈 Blank app template
+アルゴリズム／バブルソート
+見て、動かして、理解する。言語の壁を越えた学習アプリ
 
-A simple Streamlit app template for you to modify!
+公開講座「アイデアを形に！AIアプリ開発入門編（2026）」課題作品
+1. アプリを試す
+▶ アプリを起動する
+2. 開発目的
+バブルソートの仕組みを、文章やコードだけでなく、棒グラフのアニメーションで直感的に理解する。
+3. 主な機能
+機能	内容
+初期配列	起動・リセット時にランダム生成
+操作	自動再生・一時停止・ステップ・戻る
+再生速度	ゆっくり・標準・早い（初期設定）
+学習／テスト	解説文の表示・非表示
+統計情報	周回数・比較回数・交換回数・確定数
+アクセス情報	累計閲覧回数・最終閲覧日時（和暦）
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
 
-### How to run it on your own machine
+4. オリジナリティ・工夫した点
+- 天秤型マーク：比較対象の2本を灰色の図形でつなぎ、交換をスライド表示。
+- 色による進捗表示：多色 → 確定した棒は灰色 → 全整列完了で一斉に黄色。
+- 4か国語対応：日本語 ｜ Tiếng Việt ｜ नेपाली ｜ English。操作途中でも切り替え可能。
+- 繰り返し学習：ランダム配列と学習／テストモードで、次の動作を自分で考えられる。
+- 利用状況の可視化：アクセス回数と最終閲覧日時を表題の右上に表示。
+5. 実演
+ステップ実行 → 自動再生 → 黄色で整列完了 → 言語切り替え
+6. AIの活用・使用技術
+自分で考えた教材のアイデアをChatGPTに伝え、コード生成と改良を繰り返して実現しました。
 
-Prerequisite: install `uv` if you don't already have it.
-
-```
-$ curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-1. Sync the dependencies
-
-   ```
-   $ uv sync
-   ```
-
-2. Run the app
-
-   ```
-   $ uv run streamlit run streamlit_app.py
-   ```
+Python / Streamlit / HTML / CSS / JavaScript / SVG / SQLite / GitHub
