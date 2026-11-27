@@ -51,6 +51,7 @@ with sqlite3.connect("visits.sqlite3", timeout=15) as db:
         WHERE id = 1
     """).fetchone()
 
+
 # 日本時間・和暦への変換
 
 d = datetime.fromisoformat(last).astimezone(JST)
@@ -197,10 +198,11 @@ select {
     color: white;
     font-size: clamp(16px, 4vw, 32px);
     font-weight: bold;
+
     transition:
-        left 0.075s ease,
-        background-color 0.075s ease,
-        color 0.075s ease;
+        left var(--animation-time, 0.035s) ease,
+        background-color var(--animation-time, 0.035s) ease,
+        color var(--animation-time, 0.035s) ease;
 }
 
 /* 灰色の天秤型比較マーク */
@@ -210,7 +212,9 @@ select {
     bottom: 35px;
     width: 22.2222%;
     height: 55px;
-    transition: left 0.075s ease;
+
+    transition:
+        left var(--animation-time, 0.035s) ease;
 }
 
 /* 統計情報 */
@@ -329,13 +333,13 @@ select {
 
         <span id="speedLabel"></span>
 
-        <select id="speed">
+        <select id="speed" onchange="changeSpeed()">
 
             <option value="1600"></option>
 
             <option value="1000"></option>
 
-            <option value="100" selected></option>
+            <option value="46" selected></option>
 
         </select>
 
@@ -764,6 +768,8 @@ let history = [];
 
 let message = ['intro'];
 
+let nextTick = 0;
+
 
 // ==================================================
 // 言語の切り替え
@@ -776,6 +782,70 @@ function setLang(l) {
     document.documentElement.lang = l;
 
     render();
+
+}
+
+
+// ==================================================
+// アニメーション速度の調整
+// ==================================================
+
+function updateAnimationSpeed() {
+
+    const speed = Number($('speed').value);
+
+    let duration;
+
+    if (speed === 46) {
+
+        duration = 35;
+
+    } else if (speed === 1000) {
+
+        duration = 250;
+
+    } else {
+
+        duration = 400;
+
+    }
+
+    // 手動操作では見やすい移動速度にする
+
+    if (!playing) {
+
+        duration = 250;
+
+    }
+
+    document.documentElement.style.setProperty(
+        '--animation-time',
+        duration + 'ms'
+    );
+
+}
+
+
+// 再生途中で速度を変更
+
+function changeSpeed() {
+
+    updateAnimationSpeed();
+
+    if (playing) {
+
+        clearTimeout(timer);
+
+        const speed =
+            Number($('speed').value);
+
+        nextTick =
+            performance.now() + speed;
+
+        timer =
+            setTimeout(autoPlay, speed);
+
+    }
 
 }
 
@@ -882,6 +952,11 @@ function createBars() {
 function render() {
 
     const t = T[lang];
+
+
+    // アニメーション速度
+
+    updateAnimationSpeed();
 
 
     // 表題
@@ -1224,6 +1299,7 @@ function stopPlay() {
 
 // ==================================================
 // 自動再生
+// 処理時間の累積による遅延を抑制
 // ==================================================
 
 function autoPlay() {
@@ -1234,12 +1310,19 @@ function autoPlay() {
 
     if (playing && !done) {
 
+        const speed =
+            Number($('speed').value);
+
+        nextTick += speed;
+
+        const delay = Math.max(
+            0,
+            nextTick - performance.now()
+        );
+
         timer = setTimeout(
-
             autoPlay,
-
-            Number($('speed').value)
-
+            delay
         );
 
     }
@@ -1262,6 +1345,10 @@ function togglePlay() {
     } else {
 
         playing = true;
+
+        updateAnimationSpeed();
+
+        nextTick = performance.now();
 
         autoPlay();
 
