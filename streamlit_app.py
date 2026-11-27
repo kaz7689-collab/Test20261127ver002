@@ -94,9 +94,9 @@ body {
 
 .access-info {
     text-align: right;
-    font-size: 12px;
-    padding: 5px 10px 8px;
-    line-height: 1.5;
+    font-size: 10px;
+    padding: 3px 10px 4px;
+    line-height: 1.2;
     color: #596969;
     overflow-wrap: anywhere;
 }
@@ -106,10 +106,11 @@ body {
 .header {
     background: #435bd0;
     color: white;
-    padding: 20px;
+    padding: 12px 20px;
     text-align: center;
-    font-size: clamp(20px, 4vw, 28px);
+    font-size: clamp(18px, 3.5vw, 24px);
     font-weight: bold;
+    line-height: 1.1;
 }
 
 /* 言語選択ボタン・操作ボタン */
@@ -118,20 +119,21 @@ body {
 .controls {
     display: flex;
     gap: 6px;
-    padding: 10px;
+    padding: 6px 10px;
     flex-wrap: wrap;
 }
 
 button {
     flex: 1;
-    padding: 12px 5px;
+    padding: 7px 5px;
     border: 0;
     border-radius: 7px;
     color: white;
     background: #435bd0;
     font-weight: bold;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 13px;
+    line-height: 1.1;
 }
 
 .languages button {
@@ -156,23 +158,24 @@ button:disabled {
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    padding: 10px;
+    padding: 6px 10px;
     flex-wrap: wrap;
+    font-size: 13px;
 }
 
 select {
-    padding: 6px;
-    font-size: 15px;
+    padding: 3px 6px;
+    font-size: 13px;
     border-radius: 5px;
 }
 
-/* グラフ描画領域 */
+/* グラフ描画領域：高さ60% */
 
 .canvas {
     background: white;
     border: 1px solid #b5bfc2;
-    margin: 10px;
-    height: 330px;
+    margin: 6px 10px;
+    height: 198px;
     position: relative;
     overflow: hidden;
 }
@@ -188,15 +191,15 @@ select {
 
 .bar {
     position: absolute;
-    bottom: 100px;
+    bottom: 60px;
     width: 8%;
     border-radius: 7px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    padding-bottom: 8px;
+    padding-bottom: 4px;
     color: white;
-    font-size: clamp(16px, 4vw, 32px);
+    font-size: clamp(14px, 3.5vw, 23px);
     font-weight: bold;
 
     transition:
@@ -209,9 +212,9 @@ select {
 
 .balance {
     position: absolute;
-    bottom: 35px;
+    bottom: 21px;
     width: 22.2222%;
-    height: 55px;
+    height: 33px;
 
     transition:
         left var(--animation-time, 0.035s) ease;
@@ -223,10 +226,11 @@ select {
     display: flex;
     justify-content: space-around;
     gap: 4px;
-    padding: 12px 4px;
+    padding: 7px 4px;
     background: #f7f9f9;
     text-align: center;
-    font-size: 13px;
+    font-size: 11px;
+    line-height: 1.1;
 }
 
 .statistics div {
@@ -235,19 +239,19 @@ select {
 
 .statistics strong {
     display: block;
-    font-size: 25px;
+    font-size: 19px;
     color: #435bd0;
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 /* アルゴリズムの説明 */
 
 .explanation {
-    min-height: 105px;
-    padding: 14px;
-    font-size: 18px;
+    min-height: 63px;
+    padding: 8px 14px;
+    font-size: 14px;
     font-weight: bold;
-    line-height: 1.5;
+    line-height: 1.3;
 }
 
 /* 操作ボタン */
@@ -740,6 +744,9 @@ const SORTED_COLOR = '#adb7bc';
 
 const COMPLETE_COLOR = '#ffdb00';
 
+// 棒グラフの高さを60%に縮小
+const HEIGHT_SCALE = 0.6;
+
 let lang = 'ja';
 
 let data = [];
@@ -892,8 +899,10 @@ function createBars() {
 
         b.className = 'bar';
 
+        // 棒の高さを従来の60%にする
+
         b.style.height =
-            (45 + v * 16) + 'px';
+            ((45 + v * 16) * HEIGHT_SCALE) + 'px';
 
         b.textContent = v;
 
@@ -1299,7 +1308,6 @@ function stopPlay() {
 
 // ==================================================
 // 自動再生
-// 処理時間の累積による遅延を抑制
 // ==================================================
 
 function autoPlay() {
@@ -1426,6 +1434,7 @@ reset();
 
 # ==================================================
 # Streamlit画面への表示
+# 全体の高さを850pxから510pxに変更
 # ==================================================
 
 components.html(
@@ -1434,7 +1443,7 @@ components.html(
         .replace('__COUNT__', str(count))
         .replace('__LAST__', last_visit),
 
-    height=850,
+    height=510,
 
     scrolling=True
 
