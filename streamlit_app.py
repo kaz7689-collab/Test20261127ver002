@@ -91,6 +91,19 @@ body {
     color: #435454;
 }
 
+/* アクセス情報を表題の右上に表示 */
+
+.access-info {
+    text-align: right;
+    font-size: 12px;
+    padding: 5px 10px 8px;
+    line-height: 1.5;
+    color: #596969;
+    overflow-wrap: anywhere;
+}
+
+/* 表題 */
+
 .header {
     background: #435bd0;
     color: white;
@@ -233,19 +246,24 @@ select {
     background: #4388d1;
 }
 
-.footer {
-    text-align: right;
-    font-size: 12px;
-    padding: 10px 14px 16px;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-}
-
 </style>
 
 </head>
 
 <body>
+
+<!-- アクセスカウンター・最終閲覧日時 -->
+
+<div class="access-info">
+
+    <span id="visitsLabel"></span>：__COUNT__
+
+    <br>
+
+    <span id="lastLabel"></span>：__LAST__
+
+</div>
+
 
 <!-- 表題 -->
 
@@ -389,19 +407,6 @@ select {
     <button id="playButton"
             onclick="togglePlay()">
     </button>
-
-</div>
-
-
-<!-- アクセスカウンター・最終閲覧日時 -->
-
-<div class="footer">
-
-    <span id="visitsLabel"></span>：__COUNT__
-
-    <br>
-
-    <span id="lastLabel"></span>：__LAST__
 
 </div>
 
