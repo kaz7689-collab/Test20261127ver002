@@ -3,7 +3,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 st.set_page_config(
-    page_title="バブルソート",
+    page_title="アルゴリズム／バブルソート",
     page_icon="📊",
     layout="centered"
 )
@@ -31,7 +31,7 @@ body {
     color: white;
     padding: 22px;
     text-align: center;
-    font-size: 28px;
+    font-size: clamp(20px, 4vw, 28px);
     font-weight: bold;
 }
 
@@ -66,7 +66,8 @@ body {
     font-weight: bold;
     transition:
         left 0.15s ease,
-        background-color 0.15s ease;
+        background-color 0.15s ease,
+        color 0.15s ease;
 }
 
 .balance {
@@ -164,7 +165,7 @@ select {
 <body>
 
 <div class="header">
-    バブルソート
+    アルゴリズム／バブルソート
 </div>
 
 <div class="settings">
@@ -245,6 +246,8 @@ select {
 
 <script>
 
+// 棒グラフの初期色
+
 const colors = [
     "#435bd0",
     "#4388d1",
@@ -256,6 +259,12 @@ const colors = [
     "#ed7500",
     "#d62718"
 ];
+
+// 整列確定時の色
+const SORTED_COLOR = "#adb7bc";
+
+// 全整列完了時の色
+const COMPLETE_COLOR = "#ffdb00";
 
 let data = [];
 let bars = {};
@@ -351,7 +360,8 @@ function createBars() {
 
     balance.innerHTML = `
         <svg viewBox="0 0 160 65"
-             width="100%" height="100%">
+             width="100%" height="100%"
+             preserveAspectRatio="none">
 
             <g stroke="#849c9d"
                stroke-width="7"
@@ -408,16 +418,35 @@ function render() {
         bar.style.left =
             barPosition(index) + "%";
 
-        // 整列が確定した棒を灰色にする
 
-        if (done || index >= N - pass) {
+        // 全整列が完了したら黄色にする
 
-            bar.style.backgroundColor = "#adb7bc";
+        if (done) {
+
+            bar.style.backgroundColor =
+                COMPLETE_COLOR;
+
+            bar.style.color = "#594800";
+
+
+        // 整列途中で位置が確定した棒は灰色
+
+        } else if (index >= N - pass) {
+
+            bar.style.backgroundColor =
+                SORTED_COLOR;
+
+            bar.style.color = "white";
+
+
+        // 未確定の棒は元の色
 
         } else {
 
             bar.style.backgroundColor =
                 colors[value - 1];
+
+            bar.style.color = "white";
         }
 
     });
@@ -481,6 +510,15 @@ function updateMessage() {
 
     const explanation =
         document.getElementById("explanation");
+
+    if (done) {
+
+        explanation.style.color = "#218838";
+
+    } else {
+
+        explanation.style.color = "#596969";
+    }
 
     if (mode === "Study") {
 
@@ -611,6 +649,9 @@ function step() {
             pass++;
             j = 0;
 
+
+            // すべての整列動作が完了
+
             if (pass >= N - 1) {
 
                 done = true;
@@ -711,7 +752,13 @@ function reset() {
 
     stopPlay();
 
-    data = shuffle();
+    // 新しいランダム配列を生成
+
+    const previousData = data.join(",");
+
+    do {
+        data = shuffle();
+    } while (data.join(",") === previousData);
 
     pass = 0;
     j = 0;
