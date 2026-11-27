@@ -20,19 +20,19 @@ st.set_page_config(
 
 JST = timezone(timedelta(hours=9))
 
-if "visit_registered" not in st.session_state:
+with sqlite3.connect("visits.sqlite3", timeout=15) as db:
 
-    now = datetime.now(JST)
+    db.execute("""
+        CREATE TABLE IF NOT EXISTS visits (
+            id INTEGER PRIMARY KEY,
+            count INTEGER NOT NULL,
+            last_visit TEXT NOT NULL
+        )
+    """)
 
-    with sqlite3.connect("visits.sqlite3", timeout=15) as db:
+    if "visit_registered" not in st.session_state:
 
-        db.execute("""
-            CREATE TABLE IF NOT EXISTS visits (
-                id INTEGER PRIMARY KEY,
-                count INTEGER NOT NULL,
-                last_visit TEXT NOT NULL
-            )
-        """)
+        now = datetime.now(JST)
 
         db.execute("""
             INSERT INTO visits VALUES (1, 1, ?)
@@ -41,17 +41,15 @@ if "visit_registered" not in st.session_state:
                 last_visit = excluded.last_visit
         """, (now.isoformat(),))
 
-    st.session_state.visit_registered = True
+        db.commit()
 
-
-with sqlite3.connect("visits.sqlite3", timeout=15) as db:
+        st.session_state.visit_registered = True
 
     count, last = db.execute("""
         SELECT count, last_visit
         FROM visits
         WHERE id = 1
     """).fetchone()
-
 
 # 日本時間・和暦への変換
 
@@ -113,6 +111,8 @@ body {
     font-weight: bold;
 }
 
+/* 言語選択ボタン・操作ボタン */
+
 .languages,
 .controls {
     display: flex;
@@ -149,6 +149,8 @@ button:disabled {
     cursor: default;
 }
 
+/* モード・再生速度 */
+
 .settings {
     display: flex;
     justify-content: space-between;
@@ -162,6 +164,8 @@ select {
     font-size: 15px;
     border-radius: 5px;
 }
+
+/* グラフ描画領域 */
 
 .canvas {
     background: white;
@@ -178,6 +182,8 @@ select {
     width: 92%;
     height: 100%;
 }
+
+/* 棒グラフ */
 
 .bar {
     position: absolute;
@@ -197,6 +203,8 @@ select {
         color 0.15s ease;
 }
 
+/* 灰色の天秤型比較マーク */
+
 .balance {
     position: absolute;
     bottom: 35px;
@@ -204,6 +212,8 @@ select {
     height: 55px;
     transition: left 0.15s ease;
 }
+
+/* 統計情報 */
 
 .statistics {
     display: flex;
@@ -226,6 +236,8 @@ select {
     margin-top: 4px;
 }
 
+/* アルゴリズムの説明 */
+
 .explanation {
     min-height: 105px;
     padding: 14px;
@@ -233,6 +245,8 @@ select {
     font-weight: bold;
     line-height: 1.5;
 }
+
+/* 操作ボタンの色 */
 
 .reset {
     background: #ff9d00;
@@ -320,8 +334,6 @@ select {
             <option value="1600"></option>
 
             <option value="1000"></option>
-
-            <option value="600"></option>
 
             <option value="200" selected></option>
 
@@ -436,8 +448,7 @@ const T = {
         speeds: [
             'ゆっくり',
             '標準',
-            '速い',
-            '最速'
+            '早い'
         ],
 
         stats: [
@@ -507,8 +518,7 @@ const T = {
         speeds: [
             'Chậm',
             'Bình thường',
-            'Nhanh',
-            'Nhanh nhất'
+            'Nhanh'
         ],
 
         stats: [
@@ -578,8 +588,7 @@ const T = {
         speeds: [
             'ढिलो',
             'सामान्य',
-            'छिटो',
-            'सबैभन्दा छिटो'
+            'छिटो'
         ],
 
         stats: [
@@ -649,8 +658,7 @@ const T = {
         speeds: [
             'Slow',
             'Normal',
-            'Fast',
-            'Fastest'
+            'Fast'
         ],
 
         stats: [
