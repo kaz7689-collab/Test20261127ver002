@@ -35,4 +35,4 @@
 ## 4. 実演
 ステップ実行 → 自動再生 → 黄色で整列完了 → 言語切り替え
 Python / Streamlit / HTML / CSS / JavaScript / SVG / SQLite / GitHub
-# 大変にためになりました。<br>ありがとうございました！
+# 前回ともども多くを学ばせて戴きました。<br>ありがとうございました！
