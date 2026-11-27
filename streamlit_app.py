@@ -89,7 +89,7 @@ body {
     color: #435454;
 }
 
-/* アクセス情報を表題の右上に表示 */
+/* アクセス情報 */
 
 .access-info {
     text-align: right;
@@ -198,9 +198,9 @@ select {
     font-size: clamp(16px, 4vw, 32px);
     font-weight: bold;
     transition:
-        left 0.15s ease,
-        background-color 0.15s ease,
-        color 0.15s ease;
+        left 0.075s ease,
+        background-color 0.075s ease,
+        color 0.075s ease;
 }
 
 /* 灰色の天秤型比較マーク */
@@ -210,7 +210,7 @@ select {
     bottom: 35px;
     width: 22.2222%;
     height: 55px;
-    transition: left 0.15s ease;
+    transition: left 0.075s ease;
 }
 
 /* 統計情報 */
@@ -246,7 +246,7 @@ select {
     line-height: 1.5;
 }
 
-/* 操作ボタンの色 */
+/* 操作ボタン */
 
 .reset {
     background: #ff9d00;
@@ -266,7 +266,7 @@ select {
 
 <body>
 
-<!-- アクセスカウンター・最終閲覧日時 -->
+<!-- アクセス情報 -->
 
 <div class="access-info">
 
@@ -335,7 +335,7 @@ select {
 
             <option value="1000"></option>
 
-            <option value="200" selected></option>
+            <option value="100" selected></option>
 
         </select>
 
